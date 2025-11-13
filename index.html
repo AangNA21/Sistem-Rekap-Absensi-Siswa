@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Absensi MA/MTs IBADURROHMAN</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jsPDF & html2canvas for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">MA/MTs IBADURROHMAN — Absensi</div>
+    <div class="actions">
+      <button id="btnBackup" class="btn small">Backup (Download)</button>
+      <label class="btn small upload">
+        Restore
+        <input id="importFile" type="file" accept="application/json" style="display:none"/>
+      </label>
+      <button id="btnReset" class="btn small warn">Reset Local</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <nav class="sidebar">
+      <ul>
+        <li data-page="dashboard" class="active">Dashboard</li>
+        <li data-page="view-students">Lihat Data Siswa</li>
+        <li data-page="manage-students">Atur Data Siswa</li>
+        <li data-page="rekap">Rekap Absensi</li>
+      </ul>
+      <div class="sidebar-footer">
+        <small>Responsive • Local DB</small>
+      </div>
+    </nav>
+
+    <section class="content">
+      <!-- DASHBOARD -->
+      <section id="page-dashboard" class="page active">
+        <h2>Dashboard</h2>
+        <div class="cards">
+          <div class="card chart-card">
+            <h3>Persentase Kehadiran (Semua)</h3>
+            <canvas id="chartOverall" width="400" height="250"></canvas>
+          </div>
+          <div class="card chart-card">
+            <h3>Kehadiran Per Kelas</h3>
+            <canvas id="chartPerClass" width="400" height="250"></canvas>
+          </div>
+          <div class="card chart-card">
+            <h3>Kehadiran 7 Hari Terakhir</h3>
+            <canvas id="chartWeekly" width="400" height="250"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW STUDENTS -->
+      <section id="page-view-students" class="page">
+        <h2>Lihat Data Siswa</h2>
+        <div class="toolbar">
+          <select id="filterClassView">
+            <option value="all">Semua Kelas</option>
+          </select>
+          <button id="exportClassPdf" class="btn">Export PDF Per Kelas</button>
+        </div>
+
+        <div id="studentsListContainer"></div>
+      </section>
+
+      <!-- MANAGE STUDENTS -->
+      <section id="page-manage-students" class="page">
+        <h2>Atur Data Siswa & Kelas</h2>
+
+        <div class="panel">
+          <h3>Kelola Kelas</h3>
+          <div class="row">
+            <input id="newClassName" placeholder="Contoh: 7A, 8B" />
+            <button id="btnAddClass" class="btn">Tambah Kelas</button>
+            <button id="btnPromote" class="btn">Naikkan Siswa Semua Kelas</button>
+          </div>
+          <div id="classesContainer" class="list small"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Kelola Siswa</h3>
+          <form id="formAddStudent" class="form-inline">
+            <input id="studentName" placeholder="Nama Siswa" required />
+            <select id="studentClass" required><option value="">Pilih Kelas</option></select>
+            <button class="btn" type="submit">Tambah Siswa</button>
+          </form>
+          <div id="manageStudentsList" class="list"></div>
+        </div>
+      </section>
+
+      <!-- REKAP ABSENSI -->
+      <section id="page-rekap" class="page">
+        <h2>Rekap Absensi Harian</h2>
+        <div class="toolbar">
+          <select id="filterClassRekap"><option value="all">Pilih Kelas</option></select>
+          <input id="rekapDate" type="date" />
+          <button id="loadDay" class="btn">Muat</button>
+          <button id="exportDayPdf" class="btn">Export PDF Per Kelas</button>
+        </div>
+
+        <div id="attendanceContainer"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Created for MA/MTs IBADURROHMAN — LocalStorage DB • Backup via JSON</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
